@@ -5,46 +5,45 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import { Badge } from '@mui/material';
+import styled from '@emotion/styled';
+import { Property } from '@/types/property';
 
-export default function PropertyCard() {
+type PropertyCardProps = {
+  property: Property;
+};
+
+export default function PropertyCard({ property }: PropertyCardProps) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card>
       <CardActionArea>
         <CardMedia
           component='img'
           height='140'
-          image='https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-          alt='green iguana'
+          image={property.image}
+          alt={property.address}
         />
+        {property.isNew && <NewTag>Novo</NewTag>}
         <CardContent>
-          <Badge
-            variant='dot'
-            style={{
-              position: 'absolute',
-              left: 8,
-              top: 8,
-              backgroundColor: '#10B981',
-              color: 'white',
-              fontSize: 12,
-              fontWeight: 500,
-              padding: '4px 8px',
-              borderRadius: 4,
-            }}
-          >
-            Novo
-          </Badge>
-
-          <Typography
-            variant='h3'
-            style={{ fontSize: '1.25rem', fontWeight: 'bold' }}
-          >
-            622000
+          <Typography variant='h6'>
+            ${property.price.toLocaleString()}
           </Typography>
-          <Typography variant='body2' sx={{ color: 'text.secondary' }}>
-            4123 W Century Blvd, Inglewood, California 90544
+          <Typography variant='body2' color='textSecondary'>
+            {property.address}
           </Typography>
         </CardContent>
       </CardActionArea>
     </Card>
   );
 }
+
+const NewTag = styled(Badge)({
+  position: 'absolute',
+  top: 10,
+  left: 10,
+  backgroundColor: '#4CAF50',
+  color: 'white',
+  padding: '5px 10px',
+  fontSize: '12px',
+  fontWeight: 'bold',
+  borderRadius: '5px',
+});

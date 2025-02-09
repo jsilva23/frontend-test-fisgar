@@ -1,25 +1,22 @@
-'use client';
-import PropertyCard from '@/components/PropertyCard';
-import styled from '@emotion/styled';
+import React from 'react';
 
-export default function Home() {
+import { Container } from '@mui/material';
+import Grid from '@mui/material/Grid2';
+
+import Filter from '@/components/Filter';
+import PropertyList from '@/components/PropertyList';
+
+export default function RealEstatePage() {
   return (
-    <GridContainer>
-      <PropertyCard />
-    </GridContainer>
+    <Container style={{ paddingTop: '4rem' }}>
+      <Grid container spacing={3} mt={3}>
+        <Grid size={{ xs: 12, md: 3 }}>
+          <Filter />
+        </Grid>
+        <Grid size={{ xs: 12, md: 9 }}>
+          <PropertyList />
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
-
-const GridContainer = styled.div`
-  display: grid;
-  gap: 24px;
-  grid-template-columns: repeat(1, 1fr);
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-`;
