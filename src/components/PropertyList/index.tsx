@@ -1,74 +1,63 @@
 'use client';
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
+import styled from '@emotion/styled';
 
 import PropertyCard from '@/components/PropertyCard';
-
-const properties = [
-  {
-    id: 1,
-    price: 699678,
-    address: '3517 W. Gray St. Utica, Pennsylvania 57867',
-    image:
-      'https://images.pexels.com/photos/4469136/pexels-photo-4469136.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    rooms: 3,
-    basic_criteria: ['parking', 'furnished', 'pool'],
-    isNew: true,
-  },
-  {
-    id: 2,
-    price: 415000,
-    address: '8502 Preston Rd. Inglewood, Maine 98380',
-    image:
-      'https://images.pexels.com/photos/8583907/pexels-photo-8583907.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    rooms: 4,
-    basic_criteria: ['parking', 'furnished', 'pool'],
-    isNew: true,
-  },
-  {
-    id: 3,
-    price: 553835,
-    address: '3891 Ranchview Dr. Richardson, California 62639',
-    image:
-      'https://images.pexels.com/photos/5353946/pexels-photo-5353946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    rooms: 5,
-    basic_criteria: ['parking', 'furnished', 'pool'],
-    isNew: false,
-  },
-  {
-    id: 4,
-    price: 699400,
-    address: '1312 W 96th St Apt 4, Los Angeles, California 90044',
-    image:
-      'https://images.pexels.com/photos/4839348/pexels-photo-4839348.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    rooms: 6,
-    basic_criteria: ['parking', 'furnished', 'pool'],
-    isNew: false,
-  },
-  {
-    id: 5,
-    price: 550000,
-    address: '3203 Jack Northrop Ave, Hawthorne, California 90250',
-    image:
-      'https://images.pexels.com/photos/10827221/pexels-photo-10827221.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    rooms: 7,
-    basic_criteria: ['parking', 'furnished', 'pool'],
-    isNew: false,
-  },
-];
+import { Property } from '@/types/property';
 
 export default function PropertyList() {
+  const [properties, setProperties] = useState<Array<Property>>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProperties = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/properties');
+      const data = await response.json();
+      setProperties(data);
+    } catch (error) {
+      console.error('Error fetching properties:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProperties();
+  }, []);
+
   return (
     <>
-      <Typography variant='h6'>Imóveis disponíveis</Typography>
-      <Grid container spacing={3} paddingY={2}>
-        {properties.map((property) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={property.id}>
-            <PropertyCard property={property} />
+      {loading ? (
+        <StyledBox>
+          <Typography variant='h6'>Carregando...</Typography>
+        </StyledBox>
+      ) : properties.length === 0 ? (
+        <StyledBox>
+          <Typography variant='h5'>Nenhum imóvel disponível</Typography>
+        </StyledBox>
+      ) : (
+        <Box>
+          <Typography variant='h6'>Imóveis disponíveis</Typography>
+          <Grid container spacing={3} paddingY={2}>
+            {properties.map((property) => (
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={property.id}>
+                <PropertyCard property={property} />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </Box>
+      )}
     </>
   );
 }
+
+const StyledBox = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%',
+  width: '100%',
+});

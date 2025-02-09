@@ -4,8 +4,9 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
-import { Badge } from '@mui/material';
+import { Badge, Box } from '@mui/material';
 import styled from '@emotion/styled';
+import SingleBedIcon from '@mui/icons-material/SingleBed';
 import { Property } from '@/types/property';
 
 type PropertyCardProps = {
@@ -30,6 +31,19 @@ export function PropertyCard({ property }: PropertyCardProps) {
           <Typography variant='body2' color='textSecondary'>
             {property.address}
           </Typography>
+          <Box display='flex' alignItems='center' gap={2} marginTop={1}>
+            <Box display='flex' alignItems='center'>
+              <SingleBedIcon />
+              <Typography variant='body2'>{property.rooms}</Typography>
+            </Box>
+            <Box display='flex' alignItems='center' gap={1}>
+              {property.basic_criteria.map((criteria) => (
+                <Typography key={criteria} variant='body2'>
+                  {criteria}
+                </Typography>
+              ))}
+            </Box>
+          </Box>
         </CardContent>
       </CardActionArea>
     </Card>
