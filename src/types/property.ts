@@ -1,7 +1,9 @@
 export type Property = {
   id: number;
-  image: string;
   price: number;
   address: string;
+  image: string;
+  rooms: number;
+  basic_criteria: string[];
   isNew: boolean;
 };
