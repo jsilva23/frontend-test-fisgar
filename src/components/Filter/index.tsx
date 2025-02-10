@@ -2,13 +2,7 @@
 import React, { useState } from 'react';
 
 import Grid from '@mui/material/Grid2';
-import {
-  Typography,
-  Button,
-  TextField,
-  Checkbox,
-  FormGroup,
-} from '@mui/material';
+import { Typography, TextField, Checkbox, FormGroup, Box } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -16,8 +10,12 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import styled from '@emotion/styled';
 import { usePropertyState } from '@/components/Context';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
-const Filter: React.FC = () => {
+export default function Filter() {
+  const [open, setOpen] = React.useState(false);
   const [address, setAddress] = useState('');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [selectedRooms, setSelectedRooms] = useState<number>(0);
@@ -38,7 +36,11 @@ const Filter: React.FC = () => {
     });
   };
 
-  return (
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
+
+  const FilterContent = (
     <>
       <Typography variant='h6'>Filtros</Typography>
       <TextField
@@ -123,8 +125,21 @@ const Filter: React.FC = () => {
       <StyledButton onClick={() => handleFilter()}>Filtrar</StyledButton>
     </>
   );
-};
 
+  return (
+    <>
+      <Box display={{ md: 'none' }}>
+        <Button onClick={toggleDrawer(true)}>
+          <FilterListIcon /> Filtros
+        </Button>
+        <Drawer open={open} onClose={toggleDrawer(false)}>
+          <Box padding={4}>{FilterContent}</Box>
+        </Drawer>
+      </Box>
+      <Box display={{ sm: 'none', md: 'block' }}>{FilterContent}</Box>
+    </>
+  );
+}
 const StyledButton = styled(Button)`
   width: 100%;
   margin-top: 3.2rem;
@@ -141,5 +156,3 @@ const StyledButton = styled(Button)`
     background-color: #333333;
   }
 `;
-
-export default Filter;
