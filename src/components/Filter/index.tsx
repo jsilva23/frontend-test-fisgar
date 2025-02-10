@@ -13,6 +13,7 @@ import { usePropertyState } from '@/components/Context';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function Filter() {
   const [open, setOpen] = React.useState(false);
@@ -133,10 +134,13 @@ export default function Filter() {
           <FilterListIcon /> Filtros
         </Button>
         <Drawer open={open} onClose={toggleDrawer(false)}>
+          <DrawerCloseButton onClick={toggleDrawer(false)}>
+            <CloseIcon />
+          </DrawerCloseButton>
           <Box padding={4}>{FilterContent}</Box>
         </Drawer>
       </Box>
-      <Box display={{ sm: 'none', md: 'block' }}>{FilterContent}</Box>
+      <Box display={{ xs: 'none', md: 'block' }}>{FilterContent}</Box>
     </>
   );
 }
@@ -155,4 +159,10 @@ const StyledButton = styled(Button)`
     color: #fff;
     background-color: #333333;
   }
+`;
+
+const DrawerCloseButton = styled(Button)`
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;

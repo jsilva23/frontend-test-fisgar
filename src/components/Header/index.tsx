@@ -3,12 +3,15 @@ import React from 'react';
 
 import { AppBar, Typography, Container } from '@mui/material';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 export default function Header() {
   return (
     <StyledAppBar>
       <Container>
-        <Typography variant='h1'>IMOVEIS</Typography>
+        <Link href={'/'}>
+          <Typography variant='h1'>IMOVEIS</Typography>
+        </Link>
       </Container>
     </StyledAppBar>
   );

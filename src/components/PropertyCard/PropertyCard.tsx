@@ -20,7 +20,10 @@ type PropertyCardProps = {
 export function PropertyCard({ property }: PropertyCardProps) {
   return (
     <Card style={{ height: '100%' }}>
-      <CardActionArea style={{ height: '80%' }}>
+      <CardActionArea
+        style={{ height: '80%' }}
+        href={`/properties/${property.id}`}
+      >
         <CardMedia
           component='img'
           height='140'
