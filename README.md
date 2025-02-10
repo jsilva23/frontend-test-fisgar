@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Imobiliária Web - Teste Prático
 
-## Getting Started
+## Descrição do Projeto
+Este projeto consiste em uma aplicação web para listagem de imóveis, desenvolvida utilizando **React com TypeScript e Next.js**. A aplicação consome dados de uma **API REST fictícia**, fornecendo funcionalidades de busca e filtragem.
 
-First, run the development server:
+## Tecnologias Utilizadas
+- **React** com **Next.js** para renderização otimizada e roteamento
+- **TypeScript** para tipagem segura
+- **Material UI** para componentes estilizados e responsivos
+- **React Hooks e Context API** para gerenciamento de estado global
+- **Vitest** para testes automatizados
+- **JSON Server** para simulação da API REST
+- **Git** para versionamento do código
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Como Executar o Projeto
+### 1. Clonar o Repositório
+```sh
+git clone https://github.com/seu-usuario/nome-do-repositorio.git
+cd nome-do-repositorio
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Instalar Dependências
+```sh
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Iniciar a API Simulada (JSON Server)
+A API REST fictícia roda na porta **5000**. Para iniciá-la, execute:
+```sh
+npm run server
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Iniciar o Servidor Next.js
+```sh
+npm run dev
+```
+A aplicação estará disponível em **http://localhost:3000**.
 
-## Learn More
+## Estrutura do Projeto
+```
+/
+├── public/           # Arquivos estáticos
+├── src/
+│   ├── components/   # Componentes reutilizáveis
+│   ├── app/          # Páginas do Next.js       
+│   ├── styles/       # Estilos globais
+├── .gitignore
+├── package.json
+├── README.md
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Decisões Técnicas
+- **Material UI** foi utilizado para composição da interface, garantindo um design responsivo e acessível.
+- **Context API** foi escolhida para compartilhar estados globais, especialmente entre a lista de imóveis e o filtro.
+- **Vitest** foi aplicado para cobertura de testes em componentes e funcionalidades principais.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Funcionalidades
+✅ Listagem de imóveis consumindo API REST
+✅ Busca e filtragem de imóveis em tempo real
+✅ Interface responsiva baseada no Material UI
+✅ Gerenciamento global de estado com Context API
+✅ Roteamento entre páginas via Next.js
+✅ Testes automatizados garantindo qualidade do código
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Testes Automatizados
+Para rodar os testes, utilize o comando:
+```sh
+npm run test
+```
 
-## Deploy on Vercel
+---
+Projeto desenvolvido como parte de um teste técnico para avaliação de habilidades em **React, TypeScript e Next.js**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
