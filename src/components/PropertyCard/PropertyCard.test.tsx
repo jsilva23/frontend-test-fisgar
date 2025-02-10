@@ -8,7 +8,9 @@ const mockProperty = {
   address: 'Rua das Palmeiras, 123, Jardim Botânico, São Paulo - SP, 01234-567',
   image: 'https://images.pexels.com/...',
   rooms: 3,
-  basic_criteria: ['parking', 'furnished', 'pool'],
+  has_parking: true,
+  has_pool: false,
+  is_furnished: false,
   isNew: false,
 };
 
@@ -23,9 +25,16 @@ describe('PropertyCard', () => {
     expect(() => render(<PropertyCard />)).toThrow();
   });
 
-  it('should render property price formatted correctly', () => {
-    render(<PropertyCard property={mockProperty} />);
-    expect(screen.getByText('$699,678')).toBeInTheDocument();
+  describe('PropertyCard', () => {
+    it('should throw error when required props are missing', () => {
+      // @ts-expect-error - Testing missing required prop
+      expect(() => render(<PropertyCard />)).toThrow();
+    });
+
+    it('should handle different price values correctly', () => {
+      render(<PropertyCard property={mockProperty} />);
+      expect(screen.getByText('R$ 699.678,00')).toBeInTheDocument();
+    });
   });
 
   it('should render the property address', () => {
@@ -57,8 +66,10 @@ describe('PropertyCard', () => {
     expect(screen.queryByText('Novo')).not.toBeInTheDocument();
   });
 
-  it('should render within a clickable card action area', () => {
+  it('should have correct link to property details', () => {
     render(<PropertyCard property={mockProperty} />);
-    expect(screen.getByRole('button')).toBeInTheDocument();
+    const link = screen.getByRole('link') as HTMLAnchorElement;
+
+    expect(link).toHaveAttribute('href', '/properties/1');
   });
 });
