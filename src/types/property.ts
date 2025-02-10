@@ -4,6 +4,8 @@ export type Property = {
   address: string;
   image: string;
   rooms: number;
-  basic_criteria: string[];
+  has_parking: boolean;
+  has_pool: boolean;
+  is_furnished: boolean;
   isNew: boolean;
 };

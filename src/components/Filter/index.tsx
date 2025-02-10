@@ -7,18 +7,36 @@ import {
   Button,
   TextField,
   Checkbox,
-  FormControlLabel,
   FormGroup,
 } from '@mui/material';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import styled from '@emotion/styled';
+import { usePropertyState } from '@/components/Context';
 
 const Filter: React.FC = () => {
+  const [address, setAddress] = useState('');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
-  const [selectedRooms, setSelectedRooms] = useState<number[]>([2, 3]);
-  const [selectedBasicCriteria, setSelectedBasicCriteria] = useState<string[]>([
-    'Mobiliada',
-    'Piscina',
-  ]);
+  const [selectedRooms, setSelectedRooms] = useState<number>(0);
+  const [hasParking, setHasParking] = useState(false);
+  const [hasPool, setHasPool] = useState(false);
+  const [isFurnished, setIsFurnished] = useState(false);
+
+  const { fetchProperties } = usePropertyState();
+
+  const handleFilter = () => {
+    fetchProperties({
+      address,
+      priceRange,
+      rooms: selectedRooms,
+      hasParking,
+      hasPool,
+      isFurnished,
+    });
+  };
 
   return (
     <>
@@ -27,13 +45,15 @@ const Filter: React.FC = () => {
         size='small'
         fullWidth
         label='Endereço ou código postal'
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
         margin='normal'
       />
 
       <Typography variant='subtitle1' marginTop={2.5}>
         Faixa de preço
       </Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} marginBottom={2.5}>
         <Grid size={{ xs: 6 }}>
           <TextField
             size='small'
@@ -60,51 +80,47 @@ const Filter: React.FC = () => {
         </Grid>
       </Grid>
 
-      <Typography variant='subtitle1' marginTop={2.5}>
-        Número de quartos
-      </Typography>
-      <FormGroup style={{ display: 'flex', flexDirection: 'row' }}>
-        {['1', '2', '3', '4+'].map((room) => (
-          <FormControlLabel
-            key={room}
-            control={
-              <Checkbox checked={selectedRooms.includes(Number(room))} />
-            }
-            label={`${room}`}
-            onChange={() => {
-              setSelectedRooms((prev) =>
-                prev.includes(Number(room))
-                  ? prev.filter((r) => r !== Number(room))
-                  : [...prev, Number(room)]
-              );
-            }}
-          />
-        ))}
-      </FormGroup>
+      <FormControl>
+        <FormLabel>Número de quartos</FormLabel>
+        <RadioGroup
+          defaultValue='0'
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setSelectedRooms(Number((event.target as HTMLInputElement).value));
+          }}
+        >
+          {['0', '1', '2', '3', '4'].map((room) => (
+            <FormControlLabel
+              key={room}
+              value={room}
+              control={<Radio />}
+              label={`${room === '4' ? '4+' : room === '0' ? 'Todos' : room}`}
+            />
+          ))}
+        </RadioGroup>
+      </FormControl>
 
       <Typography variant='subtitle1' marginTop={2.5}>
         Critérios básicos
       </Typography>
       <FormGroup>
-        {['Estacionamento', 'Piscina', 'Mobiliada'].map((room) => (
-          <FormControlLabel
-            key={room}
-            control={
-              <Checkbox checked={selectedBasicCriteria.includes(room)} />
-            }
-            label={`${room}`}
-            onChange={() => {
-              setSelectedBasicCriteria((prev) =>
-                prev.includes(room)
-                  ? prev.filter((r) => r !== room)
-                  : [...prev, room]
-              );
-            }}
-          />
-        ))}
+        <FormControlLabel
+          control={<Checkbox checked={hasParking} />}
+          label='Estacionamento'
+          onChange={() => setHasParking((prev) => !prev)}
+        />
+        <FormControlLabel
+          control={<Checkbox checked={hasPool} />}
+          label='Piscina'
+          onChange={() => setHasPool((prev) => !prev)}
+        />
+        <FormControlLabel
+          control={<Checkbox checked={isFurnished} />}
+          label='Mobiliado'
+          onChange={() => setIsFurnished((prev) => !prev)}
+        />
       </FormGroup>
 
-      <StyledButton>Filtrar</StyledButton>
+      <StyledButton onClick={() => handleFilter()}>Filtrar</StyledButton>
     </>
   );
 };
@@ -113,7 +129,7 @@ const StyledButton = styled(Button)`
   width: 100%;
   margin-top: 3.2rem;
   background-color: #222222;
-  color: white;
+  color: #fdfdfd;
   font-weight: 500;
   padding: 10px 16px;
   border-radius: 8px;
@@ -121,7 +137,8 @@ const StyledButton = styled(Button)`
   transition: background-color 0.3s;
 
   &:hover {
-    border: 1px solid #4f46e5;
+    color: #fff;
+    background-color: #333333;
   }
 `;
 
